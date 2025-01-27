@@ -9,3 +9,4 @@ winit = "0.28.6"
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.7"
 dirs = "5.0"
+image = "0.24"

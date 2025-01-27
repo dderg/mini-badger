@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppConfig {
     pub interval_secs: u64,
+    pub icon_path: Option<String>, // Optional custom icon path
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -19,7 +20,7 @@ impl Default for Config {
         let mut apps = HashMap::new();
         apps.insert(
             "Things".to_string(),
-            AppConfig { interval_secs: 2 },
+            AppConfig { interval_secs: 2, icon_path: None },
         );
         Self { apps }
     }
