@@ -1,6 +1,5 @@
 
 use std::process::Command;
-use std::sync::mpsc::{self, Sender, Receiver};
 use std::time::Duration;
 use std::sync::{Arc, Mutex};
 use winit::event_loop::EventLoopProxy;
