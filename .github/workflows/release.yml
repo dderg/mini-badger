@@ -39,7 +39,7 @@ jobs:
 
     - name: Update Homebrew Formula
       run: |
-        git clone https://github.com/${{ github.repository_owner }}/homebrew-tap.git
+        git clone https://${{ secrets.TAP_TOKEN }}@github.com/${{ github.repository_owner }}/homebrew-tap.git
         cd homebrew-tap
 
         cat > mini-badger.rb << EOL
