@@ -1,0 +1,70 @@
+name: Build Rust App
+
+on:
+  push:
+    tags: [ "v*" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Build
+      run: cargo build --release
+
+    - name: Get SHA256
+      run: |
+        echo "BINARY_SHA=$(shasum -a 256 target/release/mini-badger | awk '{print $1}')" >> $GITHUB_ENV
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: target/release/mini-badger
+
+    - name: Update Homebrew Formula
+      run: |
+        git clone https://github.com/${{ github.repository_owner }}/homebrew-tap.git
+        cd homebrew-tap
+
+        cat > mini-badger.rb << EOL
+          class MiniBadger < Formula
+            desc "Your mini-badger description"
+            homepage "https://github.com/${{ github.repository }}"
+            version "${GITHUB_REF#refs/tags/v}"
+
+            if OS.mac?
+              url "https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF#refs/tags/}/mini-badger"
+              sha256 "${BINARY_SHA}"
+            end
+
+            service do
+              run opt_bin/"mini-badger"
+              keep_alive true
+              log_path var/"log/mini-badger.log"
+              error_log_path var/"log/mini-badger.error.log"
+            end
+
+            def install
+              bin.install "mini-badger"
+            end
+          end
+        EOL
+
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add mini-badger.rb
+        git commit -m "Update mini-badger to ${GITHUB_REF#refs/tags/}"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.TAP_TOKEN }}
