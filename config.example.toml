@@ -1,0 +1,8 @@
+[apps.Things]
+interval_secs = 5
+# Optional custom icon path
+icon_path = "~/.config/mini-badger/icons/things.png"
+
+[apps.Mail]
+interval_secs = 10
+icon_path = "~/.config/mini-badger/icons/mail.png"
