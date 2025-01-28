@@ -19,7 +19,7 @@ impl Default for Config {
     fn default() -> Self {
         let mut apps = HashMap::new();
         apps.insert(
-            "Things".to_string(),
+            "Mail".to_string(),
             AppConfig { interval_secs: 2, icon_path: None },
         );
         Self { apps }
