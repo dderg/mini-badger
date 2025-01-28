@@ -31,7 +31,7 @@ jobs:
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
       with:
-        files: target/release/mini-badger
+        files: target/aarch64-apple-darwin/release/mini-badger
         tag_name: ${{ github.event.release.tag_name }}
 
     - name: Update Homebrew Formula
