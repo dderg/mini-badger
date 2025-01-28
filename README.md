@@ -6,7 +6,7 @@ Lightweight app to display notification icon from the dock in the macos top bar
 
 ```bash
 brew tap dderg/tap
-brew install Mini-badger
+brew install mini-badger
 ```
 
 To run on startup
