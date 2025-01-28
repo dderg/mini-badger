@@ -1,8 +1,8 @@
 name: Build Rust App
 
 on:
-  push:
-    tags: [ "v*" ]
+  release:
+    types: [created]
 
 env:
   CARGO_TERM_COLOR: always
@@ -27,10 +27,11 @@ jobs:
       run: |
         echo "BINARY_SHA=$(shasum -a 256 target/release/mini-badger | awk '{print $1}')" >> $GITHUB_ENV
 
-    - name: Create Release
+    - name: Upload to Release
       uses: softprops/action-gh-release@v1
       with:
         files: target/release/mini-badger
+        tag_name: ${{ github.event.release.tag_name }}
 
     - name: Update Homebrew Formula
       run: |
