@@ -27,3 +27,6 @@ icon_path = "~/.config/mini-badger/icons/Slack.png"
 interval_secs = 10
 ```
 
+## Roadmap
+
+- [ ] Prevent mini-badger icon from appearing in Dock
