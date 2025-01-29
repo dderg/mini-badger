@@ -25,7 +25,33 @@ jobs:
         override: true
 
     - name: Build for Apple Silicon
-      run: cargo build --release --target aarch64-apple-darwin
+      run: |
+        # Create a basic Info.plist
+        cat > Info.plist << EOL
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>LSUIElement</key>
+            <true/>
+        </dict>
+        </plist>
+        EOL
+
+        # Build the binary
+        cargo build --release --target aarch64-apple-darwin
+
+        # Create the minimal app bundle structure
+        mkdir -p target/aarch64-apple-darwin/release/mini-badger.app/Contents/MacOS
+        cp target/aarch64-apple-darwin/release/mini-badger target/aarch64-apple-darwin/release/mini-badger.app/Contents/MacOS/
+        cp Info.plist target/aarch64-apple-darwin/release/mini-badger.app/Contents/
+
+        # Create a launcher script
+        cat > target/aarch64-apple-darwin/release/mini-badger << EOL
+        #!/bin/bash
+        exec "\$(dirname "\$0")/mini-badger.app/Contents/MacOS/mini-badger" "\$@"
+        EOL
+        chmod +x target/aarch64-apple-darwin/release/mini-badger
 
     - name: Get SHA256
       run: |
@@ -61,6 +87,7 @@ jobs:
             end
 
             def install
+              prefix.install "mini-badger.app"
               bin.install "mini-badger"
             end
           end

@@ -3,6 +3,9 @@ name = "mini-badger"
 version = "0.1.0"
 edition = "2021"
 
+[package.metadata.bundle]
+resources = ["resources/Info.plist"]
+
 [dependencies]
 tray-icon = "0.19.2"
 winit = "0.28.6"
@@ -10,3 +13,5 @@ serde = { version = "1.0", features = ["derive"] }
 toml = "0.7"
 dirs = "5.0"
 image = "0.24"
+cocoa = "0.25"
+objc = "0.2.7"

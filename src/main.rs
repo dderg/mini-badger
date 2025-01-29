@@ -3,6 +3,11 @@ mod config;
 
 use tray_icon::{TrayIconBuilder, Icon};
 use winit::event_loop::{EventLoop, ControlFlow};
+#[cfg(target_os = "macos")]
+use {
+    cocoa::appkit::{NSApplication, NSApplicationActivationPolicy},
+    objc::{msg_send, sel, sel_impl, class},
+};
 use app_monitor::{MonitorManager, CustomEvent};
 use config::Config;
 use std::path::PathBuf;
@@ -52,6 +57,13 @@ fn load_bundled_icon() -> Result<Icon, Box<dyn std::error::Error>> {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Hide from dock on macOS
+    #[cfg(target_os = "macos")]
+    unsafe {
+        let app: cocoa::base::id = msg_send![class!(NSApplication), sharedApplication];
+        app.setActivationPolicy_(NSApplicationActivationPolicy::NSApplicationActivationPolicyAccessory);
+    }
+
     let event_loop: EventLoop<CustomEvent> = EventLoop::with_user_event();
     let event_loop_proxy = event_loop.create_proxy();
     
