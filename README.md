@@ -1,6 +1,8 @@
 # Mini-badger
 
-Lightweight app to display notification icon from the dock in the macos top bar
+Shows dock notifications for selected apps in the MacOS menu bar. Bring your own icons.
+
+<img width="1168" alt="Screenshot 2025-02-08 at 05 19 55" src="https://github.com/user-attachments/assets/f046e465-7c5d-408c-bb35-5b735f596ee3" />
 
 ## Installation
 
